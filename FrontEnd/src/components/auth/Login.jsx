@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../shared/Navbar'
-import { Label } from '../ui/label'
-import { Input } from '../ui/input'
-import { RadioGroup } from '../ui/radio-group'
-import { Button } from '../ui/button'
-import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import { USER_API_END_POINT } from '@/utils/constant'
-import { toast } from 'sonner'
-import { useDispatch, useSelector } from 'react-redux'
-import { setLoading, setUser } from '@/redux/authSlice'
-import { Loader2 } from 'lucide-react'
+import React, { useEffect, useState } from 'react';
+import Navbar from '../shared/Navbar';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { RadioGroup } from '../ui/radio-group';
+import { Button } from '../ui/button';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { USER_API_END_POINT } from '@/utils/constant';
+import { toast } from 'sonner';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading, setUser } from '@/redux/authSlice';
+import { Loader2 } from 'lucide-react';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
     const [input, setInput] = useState({
@@ -18,13 +19,13 @@ const Login = () => {
         password: "",
         role: "",
     });
-    const { loading,user } = useSelector(store => store.auth);
+    const { loading, user } = useSelector(store => store.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
-    }
+    };
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -47,18 +48,33 @@ const Login = () => {
         } finally {
             dispatch(setLoading(false));
         }
-    }
-    useEffect(()=>{
-        if(user){
+    };
+
+    const handleGoogleSuccess = (response) => {
+        console.log('Google Login Success:', response);
+        // Handle token (you can send it to your backend for verification and login)
+        navigate('/'); // Redirect after successful login
+    };
+
+    const handleGoogleFailure = (error) => {
+        console.error('Google Login Failure:', error);
+        toast.error('Google sign-in failed. Please try again.');
+    };
+
+    useEffect(() => {
+        if (user) {
             navigate("/");
         }
-    },[])
+    }, [user]);
+
     return (
         <div>
             <Navbar />
             <div className='flex items-center justify-center max-w-7xl mx-auto'>
                 <form onSubmit={submitHandler} className='w-1/2 border border-gray-200 rounded-md p-4 my-10'>
                     <h1 className='font-bold text-xl mb-5'>Login</h1>
+
+                    {/* Email Field */}
                     <div className='my-2'>
                         <Label>Email</Label>
                         <Input
@@ -66,10 +82,11 @@ const Login = () => {
                             value={input.email}
                             name="email"
                             onChange={changeEventHandler}
-                            placeholder="patel@gmail.com"
+                            placeholder="A*****@xxxx.com"
                         />
                     </div>
 
+                    {/* Password Field */}
                     <div className='my-2'>
                         <Label>Password</Label>
                         <Input
@@ -77,9 +94,11 @@ const Login = () => {
                             value={input.password}
                             name="password"
                             onChange={changeEventHandler}
-                            placeholder="patel@gmail.com"
+                            placeholder="*&%#@$%^^%$@^&"
                         />
                     </div>
+
+                    {/* Role Selection */}
                     <div className='flex items-center justify-between'>
                         <RadioGroup className="flex items-center gap-4 my-5">
                             <div className="flex items-center space-x-2">
@@ -106,14 +125,37 @@ const Login = () => {
                             </div>
                         </RadioGroup>
                     </div>
+
+                    {/* Submit Button */}
                     {
-                        loading ? <Button className="w-full my-4"> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait </Button> : <Button type="submit" className="w-full my-4">Login</Button>
+                        loading ? (
+                            <Button className="w-full my-4">
+                                <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait
+                            </Button>
+                        ) : (
+                            <Button type="submit" className="w-full my-4">Login</Button>
+                        )
                     }
+
                     <span className='text-sm'>Don't have an account? <Link to="/signup" className='text-blue-600'>Signup</Link></span>
+
+                    {/* Google Sign-In Button */}
+                    <div className="my-4">
+                        <GoogleOAuthProvider clientId="528239202602-jcvg1ts0hmcm2m21gp5r2ekllsv2rpbj.apps.googleusercontent.com">
+                            <GoogleLogin
+                                onSuccess={handleGoogleSuccess}
+                                onError={handleGoogleFailure}
+                                text="continue_with"
+                                shape="pill"
+                                size="large"
+                                width="100%"
+                            />
+                        </GoogleOAuthProvider>
+                    </div>
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

@@ -1,40 +1,56 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from './shared/Navbar'
-import FilterCard from './FilterCard'
+import React, { useEffect, useState } from 'react';
+import Navbar from './shared/Navbar';
+import FilterCard from './FilterCard';
 import Job from './Job';
+import Footer from './shared/Footer'; 
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-
-// const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8];
+import backgroundImage from '../assets/background.jpg'; 
 
 const Jobs = () => {
     const { allJobs, searchedQuery } = useSelector(store => store.job);
     const [filterJobs, setFilterJobs] = useState(allJobs);
+    const [isSearchPerformed, setIsSearchPerformed] = useState(false); 
 
     useEffect(() => {
-        if (searchedQuery) {
+        if (typeof searchedQuery === 'string' && searchedQuery) { 
+            setIsSearchPerformed(true); 
             const filteredJobs = allJobs.filter((job) => {
                 return job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
                     job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-                    job.location.toLowerCase().includes(searchedQuery.toLowerCase())
-            })
-            setFilterJobs(filteredJobs)
+                    job.location.toLowerCase().includes(searchedQuery.toLowerCase());
+            });
+            setFilterJobs(filteredJobs);
         } else {
-            setFilterJobs(allJobs)
+            setFilterJobs(allJobs);
+            setIsSearchPerformed(false);
         }
     }, [allJobs, searchedQuery]);
 
     return (
-        <div>
+        <div 
+            className="flex flex-col min-h-screen" 
+            style={{
+                backgroundImage: `url(${backgroundImage})`, 
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+            }}
+        >
             <Navbar />
-            <div className='max-w-7xl mx-auto mt-5'>
-                <div className='flex gap-5'>
-                    <div className='w-20%'>
-                        <FilterCard />
-                    </div>
-                    {
-                        filterJobs.length <= 0 ? <span>Job not found</span> : (
-                            <div className='flex-1 h-[88vh] overflow-y-auto pb-5'>
+            <div className='flex flex-row mt-20 w-full'> 
+                {/* */}
+                <div className='w-1/4 p-4'>
+                    <FilterCard />
+                </div>
+                
+                {/* */}
+                <div className='flex-1 flex flex-col items-center p-4'> 
+                    <div className='h-[88vh] overflow-y-auto pb-1 w-full'> 
+                        {
+                            isSearchPerformed && filterJobs.length <= 0 ? ( 
+                                <span>Job not found</span>
+                            ) : (
                                 <div className='grid grid-cols-3 gap-4'>
                                     {
                                         filterJobs.map((job) => (
@@ -49,15 +65,14 @@ const Jobs = () => {
                                         ))
                                     }
                                 </div>
-                            </div>
-                        )
-                    }
+                            )
+                        }
+                    </div>
                 </div>
             </div>
-
-
+            <Footer /> {/* Footer component added here */}
         </div>
-    )
-}
+    );
+};
 
-export default Jobs
+export default Jobs;

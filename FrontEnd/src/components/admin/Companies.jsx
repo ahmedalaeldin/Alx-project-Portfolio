@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../shared/Navbar'
-import { Input } from '../ui/input'
-import { Button } from '../ui/button'
-import CompaniesTable from './CompaniesTable'
-import { useNavigate } from 'react-router-dom'
-import useGetAllCompanies from '@/hooks/useGetAllCompanies'
-import { useDispatch } from 'react-redux'
-import { setSearchCompanyByText } from '@/redux/companySlice'
+import React, { useEffect, useState } from 'react';
+import Navbar from '../shared/Navbar';
+import Footer from '../shared/Footer'; // إضافة الـ footer
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
+import CompaniesTable from './CompaniesTable';
+import { useNavigate } from 'react-router-dom';
+import useGetAllCompanies from '@/hooks/useGetAllCompanies';
+import { useDispatch } from 'react-redux';
+import { setSearchCompanyByText } from '@/redux/companySlice';
 
 const Companies = () => {
     useGetAllCompanies();
@@ -14,13 +15,15 @@ const Companies = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(setSearchCompanyByText(input));
-    },[input]);
+    }, [input]);
+
     return (
-        <div>
+        <div className="flex flex-col min-h-screen"> {/* لضمان توزيع العناصر بشكل صحيح */}
             <Navbar />
-            <div className='max-w-6xl mx-auto my-10'>
+            
+            <div className='flex-grow max-w-6xl mx-auto my-16'> {/* زيادة الهوامش بين العناصر */}
                 <div className='flex items-center justify-between my-5'>
                     <Input
                         className="w-fit"
@@ -29,10 +32,12 @@ const Companies = () => {
                     />
                     <Button onClick={() => navigate("/admin/companies/create")}>New Company</Button>
                 </div>
-                <CompaniesTable/>
+                <CompaniesTable />
             </div>
-        </div>
-    )
-}
 
-export default Companies
+            <Footer className="mt-10" /> {/* زيادة المسافة بين المحتوى والـ footer */}
+        </div>
+    );
+};
+
+export default Companies;

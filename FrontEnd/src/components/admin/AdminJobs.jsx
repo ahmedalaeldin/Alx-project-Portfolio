@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../shared/Navbar'
-import { Input } from '../ui/input'
-import { Button } from '../ui/button' 
-import { useNavigate } from 'react-router-dom' 
-import { useDispatch } from 'react-redux' 
-import AdminJobsTable from './AdminJobsTable'
-import useGetAllAdminJobs from '@/hooks/useGetAllAdminJobs'
-import { setSearchJobByText } from '@/redux/jobSlice'
+import React, { useEffect, useState } from 'react';
+import Navbar from '../shared/Navbar';
+import Footer from '../shared/Footer'; // إضافة الـ footer
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import AdminJobsTable from './AdminJobsTable';
+import useGetAllAdminJobs from '@/hooks/useGetAllAdminJobs';
+import { setSearchJobByText } from '@/redux/jobSlice';
 
 const AdminJobs = () => {
   useGetAllAdminJobs();
@@ -17,10 +18,12 @@ const AdminJobs = () => {
   useEffect(() => {
     dispatch(setSearchJobByText(input));
   }, [input]);
+
   return (
-    <div>
+    <div className="flex flex-col min-h-screen"> {/* لضمان توزيع العناصر في الصفحة */}
       <Navbar />
-      <div className='max-w-6xl mx-auto my-10'>
+      
+      <div className='flex-grow max-w-6xl mx-auto my-16'> {/* إضافة مساحة لأسفل الصفحة */}
         <div className='flex items-center justify-between my-5'>
           <Input
             className="w-fit"
@@ -31,8 +34,10 @@ const AdminJobs = () => {
         </div>
         <AdminJobsTable />
       </div>
-    </div>
-  )
-}
 
-export default AdminJobs
+      <Footer className="mt-auto" /> {/* تثبيت الـ footer في الأسفل */}
+    </div>
+  );
+};
+
+export default AdminJobs;
