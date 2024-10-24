@@ -1,6 +1,6 @@
 import { Job } from "../models/job.model.js";
 
-// admin post 
+// admin post //
 export const postJob = async (req, res) => {
     try {
         const { title, description, requirements, salary, location, jobType, experience, position, companyId } = req.body;
@@ -33,7 +33,7 @@ export const postJob = async (req, res) => {
         console.log(error);
     }
 }
-// student 
+// student //
 export const getAllJobs = async (req, res) => {
     try {
         const keyword = req.query.keyword || "";
@@ -60,7 +60,7 @@ export const getAllJobs = async (req, res) => {
         console.log(error);
     }
 }
-// student
+// student /
 export const getJobById = async (req, res) => {
     try {
         const jobId = req.params.id;
@@ -78,7 +78,7 @@ export const getJobById = async (req, res) => {
         console.log(error);
     }
 }
-// admin 
+// admin //
 export const getAdminJobs = async (req, res) => {
     try {
         const adminId = req.id;
