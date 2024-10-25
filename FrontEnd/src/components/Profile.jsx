@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import Navbar from './shared/Navbar'
-import { Avatar, AvatarImage } from './ui/avatar'
-import { Button } from './ui/button'
-import { Contact, Mail, Pen } from 'lucide-react'
-import { Badge } from './ui/badge'
-import { Label } from './ui/label'
-import AppliedJobTable from './AppliedJobTable'
-import UpdateProfileDialog from './UpdateProfileDialog'
-import { useSelector } from 'react-redux'
-import useGetAppliedJobs from '@/hooks/useGetAppliedJobs'
+import React, { useState } from 'react';
+import Navbar from './shared/Navbar';
+import { Avatar, AvatarImage } from './ui/avatar';
+import { Button } from './ui/button';
+import { Contact, Mail, Pen } from 'lucide-react';
+import { Badge } from './ui/badge';
+import { Label } from './ui/label';
+import AppliedJobTable from './AppliedJobTable';
+import UpdateProfileDialog from './UpdateProfileDialog';
+import { useSelector } from 'react-redux';
+import useGetAppliedJobs from '@/hooks/useGetAppliedJobs';
 import Footer from './shared/Footer'; 
 
 const Profile = () => {
@@ -16,17 +16,12 @@ const Profile = () => {
     const [open, setOpen] = useState(false);
     const { user } = useSelector(store => store.auth);
 
-    
     const latestResume = user?.profile?.resumeHistory?.length > 0 ? user.profile.resumeHistory[user.profile.resumeHistory.length - 1] : null;
 
     return (
         <div className="flex flex-col min-h-screen">
             <Navbar />
-            
-
-            <div className='flex max-w-6xl mx-auto my-20 space-x-6'>
-                
-                
+            <div className='flex-grow flex max-w-full mx-0 my-20 space-x-6'>
                 <div className='w-1/3 bg-white border border-gray-200 rounded-2xl p-8'>
                     <div className='flex justify-between'>
                         <div className='flex items-center gap-4'>
@@ -62,17 +57,17 @@ const Profile = () => {
                         <Label className="text-md font-bold">Latest Resume</Label>
                         {
                             latestResume ? (
-                                <a target='_blank' href={latestResume.url} className='text-blue-500 w-full hover:underline cursor-pointer'>
-                                    {latestResume.originalName}
+                                <a target='_blank' rel="noopener noreferrer" href={resume.url} className='text-blue-500 w-full hover:underline cursor-pointer'>
+                                    {file.originalname}
                                 </a>
                             ) : (
-                                <span>NA</span>
+                                <span></span>
                             )
                         }
                     </div>
                 </div>
 
-                {/* */}
+              
                 <div className='flex-grow bg-white rounded-2xl p-8'>
                     <h1 className='font-bold text-lg mb-5'>Applied Jobs</h1>
                     <AppliedJobTable />
@@ -80,11 +75,9 @@ const Profile = () => {
             </div>
 
             <UpdateProfileDialog open={open} setOpen={setOpen} />
-
-            {/* */}
             <Footer />
         </div>
-    )
-}
+    );
+};
 
 export default Profile;

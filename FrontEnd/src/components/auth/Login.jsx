@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLoading, setUser } from '@/redux/authSlice';
 import { Loader2 } from 'lucide-react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import Footer from '../shared/Footer';
 
 const Login = () => {
     const [input, setInput] = useState({
@@ -52,7 +53,6 @@ const Login = () => {
 
     const handleGoogleSuccess = (response) => {
         console.log('Google Login Success:', response);
-        // Handle token (you can send it to your backend for verification and login)
         navigate('/'); // Redirect after successful login
     };
 
@@ -68,9 +68,9 @@ const Login = () => {
     }, [user]);
 
     return (
-        <div>
+        <div className="flex flex-col min-h-screen"> {/* Full height flex container */}
             <Navbar />
-            <div className='flex items-center justify-center max-w-7xl mx-auto'>
+            <div className='flex items-center justify-center flex-grow'> {/* Centering the login box */}
                 <form onSubmit={submitHandler} className='w-1/2 border border-gray-200 rounded-md p-4 my-10'>
                     <h1 className='font-bold text-xl mb-5'>Login</h1>
 
@@ -154,6 +154,7 @@ const Login = () => {
                     </div>
                 </form>
             </div>
+            <Footer /> {/* Footer at the bottom */}
         </div>
     );
 };

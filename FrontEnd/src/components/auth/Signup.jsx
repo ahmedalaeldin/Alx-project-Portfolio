@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../shared/Navbar';
+import Footer from '../shared/Footer'; // Import your footer component
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { RadioGroup } from '../ui/radio-group';
@@ -20,7 +21,7 @@ const Signup = () => {
         phoneNumber: "",
         password: "",
         role: "",
-        file: null, // Change to null for file input
+        file: null,
     });
 
     const { loading, user } = useSelector(store => store.auth);
@@ -104,9 +105,9 @@ const Signup = () => {
     }, [user, navigate]);
 
     return (
-        <div>
+        <div className="flex flex-col min-h-screen">
             <Navbar />
-            <div className='flex items-center justify-center max-w-7xl mx-auto'>
+            <div className='flex-grow flex items-center justify-center'>
                 <form onSubmit={submitHandler} className='w-1/2 border border-gray-200 rounded-md p-4 my-10'>
                     <h1 className='font-bold text-xl mb-5'>Sign Up</h1>
                     <div className='my-2'>
@@ -117,7 +118,7 @@ const Signup = () => {
                             name="fullname"
                             onChange={changeEventHandler}
                             placeholder="A**** ****** ******"
-                            required // Ensure the field is required
+                            required
                         />
                     </div>
                     <div className='my-2'>
@@ -128,7 +129,7 @@ const Signup = () => {
                             name="email"
                             onChange={changeEventHandler}
                             placeholder="A*****@xxxx.com"
-                            required // Ensure the field is required
+                            required
                         />
                     </div>
                     <div className='my-2'>
@@ -139,7 +140,7 @@ const Signup = () => {
                             name="phoneNumber"
                             onChange={changeEventHandler}
                             placeholder="01xxxxxxxxx"
-                            required // Ensure the field is required
+                            required
                         />
                     </div>
                     <div className='my-2'>
@@ -150,7 +151,7 @@ const Signup = () => {
                             name="password"
                             onChange={changeEventHandler}
                             placeholder="*&%#@$%^^%$@^&"
-                            required // Ensure the field is required
+                            required
                         />
                     </div>
                     <div className='flex items-center justify-between'>
@@ -163,7 +164,7 @@ const Signup = () => {
                                     checked={input.role === 'student'}
                                     onChange={changeEventHandler}
                                     className="cursor-pointer"
-                                    required // Ensure the field is required
+                                    required
                                 />
                                 <Label htmlFor="r1">Student</Label>
                             </div>
@@ -175,7 +176,7 @@ const Signup = () => {
                                     checked={input.role === 'recruiter'}
                                     onChange={changeEventHandler}
                                     className="cursor-pointer"
-                                    required // Ensure the field is required
+                                    required
                                 />
                                 <Label htmlFor="r2">Recruiter</Label>
                             </div>
@@ -192,9 +193,9 @@ const Signup = () => {
                     </div>
                     {
                         loading ? (
-                            <Button className="w-full my-4"> 
-                                <Loader2 className='mr-2 h-4 w-4 animate-spin' /> 
-                                Please wait 
+                            <Button className="w-full my-4">
+                                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                                Please wait
                             </Button>
                         ) : (
                             <Button type="submit" className="w-full my-4">Signup</Button>
@@ -214,6 +215,7 @@ const Signup = () => {
                     </div>
                 </form>
             </div>
+            <Footer /> 
         </div>
     );
 };

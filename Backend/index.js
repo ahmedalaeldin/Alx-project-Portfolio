@@ -9,6 +9,7 @@ import jobRoute from "./routes/job.route.js";
 import applicationRoute from "./routes/application.route.js";
 import passport from "passport";
 import session from "express-session";
+import logger from "./utils/logger.js"; // Import the logger
 import './passport-setup.js';
 
 dotenv.config({});
@@ -63,7 +64,14 @@ app.get('/auth/google/callback',
     }
 );
 
+// Error-Handling Middleware
+app.use((err, req, res, next) => {
+    logger.error(`Error ${err.status || 500} - ${err.message}`);
+    res.status(err.status || 500).json({ message: err.message });
+});
+
+// Start Server
 app.listen(PORT, () => {
     connectDB();
-    console.log(`Server running at port ${PORT}`);
+    logger.info(`Server running at port ${PORT}`);
 });

@@ -11,7 +11,7 @@ export const register = async (req, res) => {
         const { fullname, email, phoneNumber, password, role } = req.body;
         console.log(req.body);
 
-        // Check for missing fields //
+        // Check for missing fields
         if (!fullname || !email || !phoneNumber || !password || !role) {
             return res.status(400).json({
                 message: "Something is missing",
@@ -19,7 +19,7 @@ export const register = async (req, res) => {
             });
         }
 
-        // Validate email format // 
+        // Validate email format
         if (!email.includes("@")) {
             return res.status(400).json({
                 message: "Invalid email format",
@@ -27,7 +27,7 @@ export const register = async (req, res) => {
             });
         }
 
-        // Check if the user already exists // 
+        // Check if the user already exists
         const userExists = await User.findOne({ email });
         if (userExists) {
             return res.status(400).json({
@@ -36,10 +36,10 @@ export const register = async (req, res) => {
             });
         }
 
-        // Hash the password // 
+        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create the user in the database //
+        // Create the user in the database
         const newUser = await User.create({
             fullname,
             email,
@@ -76,10 +76,10 @@ export const googleRegister = async (req, res) => {
 
          const { name, email, picture, sub: googleId } = ticket.getPayload();
 
-        //  Check if user already exists // 
+        //  Check if user already exists
          let user = await User.findOne({ email });
          if (!user) {
-            // If not, create a new user // 
+            // If not, create a new user
             user = await User.create({
                  fullname: name,
                 email,
@@ -144,7 +144,7 @@ export const login = async (req, res) => {
             });
         }
 
-        // Check if role is correct //
+        // Check if role is correct
         if (role !== user.role) {
             return res.status(400).json({
                 message: "Account doesn't exist with the current role.",
@@ -209,7 +209,7 @@ export const updateProfile = async (req, res) => {
         if (skills) {
             skillsArray = skills.split(",");
         }
-        const userId = req.id; // middleware authentication //
+        const userId = req.id; // middleware authentication
         let user = await User.findById(userId);
 
         if (!user) {
@@ -219,17 +219,16 @@ export const updateProfile = async (req, res) => {
             });
         }
 
-        // Update user data //
+        // Update user data
         if (fullname) user.fullname = fullname;
         if (email) user.email = email;
         if (phoneNumber) user.phoneNumber = phoneNumber;
         if (bio) user.profile.bio = bio;
         if (skills) user.profile.skills = skillsArray;
 
-        // Handle resume upload if a file was uploaded //
         if (cloudResponse) {
-            user.profile.resume = cloudResponse.secure_url; // Save the Cloudinary URL
-            user.profile.resumefullname = file.originalname; // Save the original file name
+            user.profile.resume = cloudResponse.secure_url;
+            user.profile.resumefullname = file.originalname; 
         }
 
         await user.save();

@@ -31,7 +31,7 @@ const Navbar = () => {
     };
 
     return (
-        <div className="fixed top-0 left-0 w-full z-50 bg-[#FFFFFB] shadow-md"> {/* Set background to beige using hex code */}
+        <div className="fixed top-0 left-0 w-full z-50 bg-[#FFFFFB] shadow-md">  
             {/* Navbar section */}
             <div className='flex items-center justify-between mx-auto max-w-7xl h-16'>
                 {/* Logo */}
@@ -69,15 +69,19 @@ const Navbar = () => {
                         ) : (
                             <Popover>
                                 <PopoverTrigger asChild>
-                                    <Avatar className="cursor-pointer">
-                                        <AvatarImage src={user?.profile?.profilePhoto} alt="Profile" />
-                                    </Avatar>
+                                    <div className="bg-black p-1 rounded-full cursor-pointer"> 
+                                        <Avatar>
+                                            <AvatarImage src={user?.profile?.profilePhoto} alt="Profile" />
+                                        </Avatar>
+                                    </div>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-80">
                                     <div className='flex gap-2 space-y-2'>
-                                        <Avatar className="cursor-pointer">
-                                            <AvatarImage src={user?.profile?.profilePhoto} alt="Profile" />
-                                        </Avatar>
+                                        <div className="bg-wh p-1 rounded-full">
+                                            <Avatar className="cursor-pointer">
+                                                <AvatarImage src={user?.profile?.profilePhoto} alt="Profile" />
+                                            </Avatar>
+                                        </div>
                                         <div>
                                             <h4 className='font-medium'>{user?.fullname}</h4>
                                             <p className='text-sm text-muted-foreground'>{user?.profile?.bio}</p>
